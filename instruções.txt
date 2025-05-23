@@ -1,0 +1,844 @@
+https://mail.proton.me/u/0/inbox
+empresadocesdalulu@proton.me
+Hes@2025#
+
+
+#FFB03B
+
+#FFC7C8
+
+&Znvjuw%QP]G
+
+vamos fazer uma pagina em php bootstrap + phpmyadm sql
+Esta pagina deve conter (sobremesas) campos para quantidade x valor unitario = total
+campo de Observações
+itens a serem calculados
+brigadeiro 7,90 x campo qto = total
+campo de Observações
+
+sobremesas
+Cocada  5,90 x campo qto = total 
+Pudim 45,90x campo qto = total
+Arroz doce 37,90 xcampo qto =total
+beijinho 6,90 xcampo qto = total
+bombocado 10,90 x campo qto = total
+Mouse de maracuja 29,90x campo qto = total 
+Campo Observações
+
+
+acompanhamentos 
+campos para quantidade x valor unitario = total
+Maria Mole 3,90 x campo qto = total
+Pe de moleque 4,90 x campo qto = total
+Açai na tigle 29,90 x campo qto = total
+Cajuzinho 3,90 x campo qto = total
+doce de goiabada 19,90 x campo qto = total
+Paçoca 5,90 x campo qto = total 
+Campo Observações
+
+bebidas
+refrigente 12,00 x campo qto = total
+Campo observações
+
+
+Nome completo 
+cep
+rua
+numero
+bairro
+tel 
+e-mail do cliente
+
+
+enviar no e-mail do cliente e no meu ricardosantosanalista@gmail.com todos os item com qto e totais que ele selecionou e campo observações colocar uma em sobremesas uma em acompanhamentos e uma em bebidas, fazer colunas de 3 itens por vez, bebidas deixar campo qto e obrasevações com comprimento de 100px caso tenha alguma coisa descrita e todos os dados pessoais do cliente ao clicar em finalizar vai aparece a mensagem pedido realizado com sucesso, faltou os itens  
+
+
+bom
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pedido - Doces da Lulu</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEJ6H+6m1X1z2vZ2j7Kp6V6X8g9vBwwc2mK3G1Yy5Bxg1wrqdfL1k0KfZ6hb9" crossorigin="anonymous">
+    <style>
+        .item {
+            margin-bottom: 20px;
+        }
+        .form-control {
+            width: 100px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 class="text-center">Pedido - Doces da Lulu</h2>
+        <form action="pedidos.php" method="POST">
+            <!-- Sobremesas -->
+            <h3>Sobremesas</h3>
+            <div class="row">
+                <?php 
+                $sobremesas = [
+                    "brigadeiro" => 7.90,
+                    "cocada" => 5.90,
+                    "pudim" => 45.90,
+                    "arroz_doce" => 37.90,
+                    "beijinho" => 6.90,
+                    "bombocado" => 10.90,
+                    "mousse_maracuja" => 29.90
+                ];
+                foreach ($sobremesas as $key => $value) { ?>
+                    <div class="col-md-4 item">
+                        <label for="<?php echo $key; ?>"><?php echo ucfirst(str_replace("_", " ", $key)); ?> (R$<?php echo number_format($value, 2, ',', '.'); ?>):</label>
+                        <input type="number" name="<?php echo $key; ?>" id="<?php echo $key; ?>" class="form-control" min="0" value="0">
+                        <textarea name="observacoes_<?php echo $key; ?>" class="form-control mt-2" placeholder="Observações" rows="3"></textarea>
+                    </div>
+                <?php } ?>
+            </div>
+
+            <!-- Acompanhamentos -->
+            <h3>Acompanhamentos</h3>
+            <div class="row">
+                <?php 
+                $acompanhamentos = [
+                    "maria_mole" => 3.90,
+                    "pe_de_moleque" => 4.90,
+                    "acai_tigela" => 29.90,
+                    "cajuzinho" => 3.90,
+                    "doce_goiabada" => 19.90,
+                    "pacoca" => 5.90
+                ];
+                foreach ($acompanhamentos as $key => $value) { ?>
+                    <div class="col-md-4 item">
+                        <label for="<?php echo $key; ?>"><?php echo ucfirst(str_replace("_", " ", $key)); ?> (R$<?php echo number_format($value, 2, ',', '.'); ?>):</label>
+                        <input type="number" name="<?php echo $key; ?>" id="<?php echo $key; ?>" class="form-control" min="0" value="0">
+                        <textarea name="observacoes_<?php echo $key; ?>" class="form-control mt-2" placeholder="Observações" rows="3"></textarea>
+                    </div>
+                <?php } ?>
+            </div>
+
+            <!-- Bebidas -->
+            <h3>Bebidas</h3>
+            <div class="row">
+                <?php 
+                $bebidas = [
+                    "refrigerante" => 12.00
+                ];
+                foreach ($bebidas as $key => $value) { ?>
+                    <div class="col-md-4 item">
+                        <label for="<?php echo $key; ?>"><?php echo ucfirst(str_replace("_", " ", $key)); ?> (R$<?php echo number_format($value, 2, ',', '.'); ?>):</label>
+                        <input type="number" name="<?php echo $key; ?>" id="<?php echo $key; ?>" class="form-control" min="0" value="0">
+                        <textarea name="observacoes_<?php echo $key; ?>" class="form-control mt-2" placeholder="Observações" rows="3"></textarea>
+                    </div>
+                <?php } ?>
+            </div>
+
+            <!-- Dados Pessoais -->
+            <h3>Dados do Cliente</h3>
+            <div class="row">
+                <div class="col-md-6">
+                    <input type="text" class="form-control" name="nome" placeholder="Nome Completo" required>
+                </div>
+                <div class="col-md-6">
+                    <input type="text" class="form-control" name="cep" placeholder="CEP" required>
+                </div>
+                <div class="col-md-6">
+                    <input type="text" class="form-control" name="rua" placeholder="Rua" required>
+                </div>
+                <div class="col-md-6">
+                    <input type="text" class="form-control" name="numero" placeholder="Número" required>
+                </div>
+                <div class="col-md-6">
+                    <input type="text" class="form-control" name="bairro" placeholder="Bairro" required>
+                </div>
+                <div class="col-md-6">
+                    <input type="text" class="form-control" name="telefone" placeholder="Telefone" required>
+                </div>
+                <div class="col-md-12">
+                    <input type="email" class="form-control" name="email" placeholder="E-mail" required>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-success mt-3">Finalizar</button>
+        </form>
+
+        <?php
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $nome = $_POST['nome'];
+            $email = $_POST['email'];
+            $pedido = "Pedido de $nome\n\n";
+
+            // Sobremesas
+            foreach ($sobremesas as $key => $value) {
+                $quantidade = $_POST[$key] ?? 0;
+                if ($quantidade > 0) {
+                    $total = $quantidade * $value;
+                    $pedido .= ucfirst(str_replace("_", " ", $key)) . ": $quantidade x R$" . number_format($value, 2, ',', '.') . " = R$" . number_format($total, 2, ',', '.') . "\n";
+                    $pedido .= "Observações: " . ($_POST["observacoes_$key"] ?? 'Nenhuma') . "\n\n";
+                }
+            }
+
+            // Acompanhamentos
+            foreach ($acompanhamentos as $key => $value) {
+                $quantidade = $_POST[$key] ?? 0;
+                if ($quantidade > 0) {
+                    $total = $quantidade * $value;
+                    $pedido .= ucfirst(str_replace("_", " ", $key)) . ": $quantidade x R$" . number_format($value, 2, ',', '.') . " = R$" . number_format($total, 2, ',', '.') . "\n";
+                    $pedido .= "Observações: " . ($_POST["observacoes_$key"] ?? 'Nenhuma') . "\n\n";
+                }
+            }
+
+            // Bebidas
+            foreach ($bebidas as $key => $value) {
+                $quantidade = $_POST[$key] ?? 0;
+                if ($quantidade > 0) {
+                    $total = $quantidade * $value;
+                    $pedido .= ucfirst(str_replace("_", " ", $key)) . ": $quantidade x R$" . number_format($value, 2, ',', '.') . " = R$" . number_format($total, 2, ',', '.') . "\n";
+                    $pedido .= "Observações: " . ($_POST["observacoes_$key"] ?? 'Nenhuma') . "\n\n";
+                }
+            }
+
+            // Dados do Cliente
+            $pedido .= "\nDados do Cliente:\n";
+            $pedido .= "Nome: $nome\n";
+            $pedido .= "E-mail: $email\n";
+            $pedido .= "CEP: " . $_POST['cep'] . "\n";
+            $pedido .= "Rua: " . $_POST['rua'] . "\n";
+            $pedido .= "Número: " . $_POST['numero'] . "\n";
+            $pedido .= "Bairro: " . $_POST['bairro'] . "\n";
+            $pedido .= "Telefone: " . $_POST['telefone'] . "\n";
+
+            // Enviar por e-mail
+            mail($email, "Pedido - Doces da Lulu", $pedido);
+            mail("ricardosantosanalista@gmail.com", "Novo Pedido - Doces da Lulu", $pedido);
+
+            echo "<p>Pedido realizado com sucesso!</p>";
+        }
+        ?>
+    </div>
+</body>
+</html>
+
+
+
+
+*
+
+vamos fazer uma pagina em php bootstrap + phpmyadm sql
+Esta pagina deve conter (sobremesas) campos para quantidade x valor unitario = total
+campo de Observações
+itens a serem calculados
+brigadeiro 7,90 x campo qto = total
+campo de Observações
+
+sobremesas
+Cocada  5,90 x campo qto = total 
+Pudim 45,90x campo qto = total
+Arroz doce 37,90 xcampo qto =total
+beijinho 6,90 xcampo qto = total
+bombocado 10,90 x campo qto = total
+Mouse de maracuja 29,90x campo qto = total 
+Campo Observações
+
+
+acompanhamentos 
+campos para quantidade x valor unitario = total
+Maria Mole 3,90 x campo qto = total
+Pe de moleque 4,90 x campo qto = total
+Açai na tigle 29,90 x campo qto = total
+Cajuzinho 3,90 x campo qto = total
+doce de goiabada 19,90 x campo qto = total
+Paçoca 5,90 x campo qto = total 
+Campo Observações
+
+bebidas
+refrigente 12,00 x campo qto = total
+Campo observações
+
+colocar todos os campos
+Nome completo 
+cep
+rua
+numero
+bairro
+tel 
+e-mail do cliente, deve enviar todos os itens ecolhidos com total um e-mail para o cliente e outro e-mail para empresa a parte da empresa é o meu e-mail ricardosantosanalista@gmail.com, faltou informações cep etc sobremeses acompanhamentos
+garatir que todos os iten serem calculados conforme o pedido do cliente e verificar os estão como R$7.9 DEVEM FICAR COMO R$7,90, quando clicar em finalizar pedidos ele deve ir para confirmacao.php informando o total, estão faltando vários itens no index. php colocar:  sobremesas
+
+Sobremesas
+Cocada  5,90 x campo qto = total 
+Pudim 45,90x campo qto = total
+Arroz doce 37,90 xcampo qto =total
+beijinho 6,90 xcampo qto = total
+bombocado 10,90 x campo qto = total
+Mouse de maracuja 29,90x campo qto = total 
+
+acompanhamentos 
+campos para quantidade x valor unitario = total
+Maria Mole 3,90 x campo qto = total
+Pe de moleque 4,90 x campo qto = total
+Açai na tigle 29,90 x campo qto = total
+Cajuzinho 3,90 x campo qto = total
+doce de goiabada 19,90 x campo qto = total
+Paçoca 5,90 x campo qto = total 
+
+
+bebidas
+refrigente 12,00 x campo qto = total
+
+Campo Observações:
+
+
+banco sql
+informa5_teste
+senha:{%M?c=XwHcd-
+
+
+cade os itens do index.php
+Sobremesa
+colocar item por item e garantir o calculo: Sobremesas
+Cocada  5,90 x campo qto = total 
+Pudim 45,90x campo qto = total
+Arroz doce 37,90 xcampo qto =total
+beijinho 6,90 xcampo qto = total
+bombocado 10,90 x campo qto = total
+Mouse de maracuja 29,90x campo qto = total 
+
+acompanhamentos 
+campos para quantidade x valor unitario = total
+Maria Mole 3,90 x campo qto = total
+Pe de moleque 4,90 x campo qto = total
+Açai na tigle 29,90 x campo qto = total
+Cajuzinho 3,90 x campo qto = total
+doce de goiabada 19,90 x campo qto = total
+Paçoca 5,90 x campo qto = total 
+
+
+bebidas
+refrigente 12,00 x campo qto = total
+
+descriminar no e-mail cada item pedido pelo cliente, no sql estão faltando itens, colocar todos os itens Sobremesas item cocada etc acompanhemtos item maria mole etc bebidas refigerante etc  
+
+
+Brownie  6,71   cancela cocada  5.90
+
+Mousse 7,24    cancela mouse de naracuja 29.90
+
+Pão de Mel  5,18   cancela pudim 49.90
+
+
+
+
+
+
+
+
+
+
+
+me passa um css que deixei este pagina mais bonita com fundo #E5ADBA
+
+ <!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title> Doces da Lulu</title>
+  <meta content="" name="Doces da lulu">
+  <meta content="" name="Doces artesanais, sabor caseiro, brigadeiro, sobremesas, qualidade, festa, carinho, tradição, delícia, feito com amor">
+
+  <!-- Favicons -->
+
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Poppins:300,300i,400,400i,600,600i,700,700i|Satisfy|Comic+Neue:300,300i,400,400i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="assets/vendor/animate.css/animate.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="assets/css/style.css" rel="stylesheet">
+
+
+</head>
+
+<body>
+
+  <!-- ======= Top Bar ======= -->
+  <section id="topbar" class="d-flex align-items-center fixed-top topbar-transparent">
+    <div class="container-fluid container-xl d-flex align-items-center justify-content-center justify-content-lg-start">
+      <i class="bi bi-phone d-flex align-items-center"><span>(15) 9964-82230</span></i>
+      <i class="bi bi-clock ms-4 d-none d-lg-flex align-items-center"><span>Ter-Dom: 08:00 - 18:00</span></i>
+    </div>
+  </section>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="fixed-top d-flex align-items-center header-transparent">
+    <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
+
+      <div class="logo me-auto">
+        <h1><a href="index.html">Doces da Lulu</a></h1>
+        <!-- Uncomment below if you prefer to use an image logo -->
+        <!-- <a href="index.html"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
+      </div>
+
+      <nav id="navbar" class="navbar order-last order-lg-0">
+        <ul>
+          <li><a class="nav-link scrollto active" href="#hero">Home</a></li>
+          <li><a class="nav-link scrollto" href="#about">Sobre</a></li>
+          <li><a class="nav-link scrollto" href="#menu">Menu</a></li>
+          <li><a class="nav-link scrollto" href="pedidos/index.php">Pedidos</a></li>
+          <!--<li><a class="nav-link scrollto" href="#events">Events</a></li>
+          <li><a class="nav-link scrollto" href="#chefs">Chefs</a></li>-->
+          <li><a class="nav-link scrollto" href="#gallery">Galeria</a></li>
+         <!--<li class="dropdown"><a href="#"><span>Drop Down</span> <i class="bi bi-chevron-down"></i></a>-->
+            <ul>
+              <!--<li><a href="#">Drop Down 1</a></li>
+              <li class="dropdown"><a href="#"><span>Deep Drop Down</span> <i class="bi bi-chevron-right"></i></a>
+                <ul>
+                  <li><a href="#">Deep Drop Down 1</a></li>
+                  <li><a href="#">Deep Drop Down 2</a></li>
+                  <li><a href="#">Deep Drop Down 3</a></li>
+                  <li><a href="#">Deep Drop Down 4</a></li>
+                  <li><a href="#">Deep Drop Down 5</a></li>
+                </ul>
+              </li>
+              <li><a href="#">Drop Down 2</a></li>
+              <li><a href="#">Drop Down 3</a></li>
+              <li><a href="#">Drop Down 4</a></li>
+            </ul>-->
+          </li>
+          <li><a class="nav-link scrollto" href="#contact">Contato</a></li>
+        </ul>
+        <i class="bi bi-list mobile-nav-toggle"></i>
+      </nav><!-- .navbar -->
+<!--
+      <a href="#book-a-table" class="book-a-table-btn scrollto">Book a table</a>-->
+
+    </div>
+  </header><!-- End Header -->
+
+  <!-- ======= Hero Section ======= -->
+  <section id="hero">
+    <div class="hero-container">
+      <div id="heroCarousel" data-bs-interval="5000" class="carousel slide carousel-fade" data-bs-ride="carousel">
+
+        <ol class="carousel-indicators" id="hero-carousel-indicators"></ol>
+
+        <div class="carousel-inner" role="listbox">
+
+          <!-- Slide 1 -->
+          <div class="carousel-item active" style="background-image: url(assets/img/slide/slider-1.jpg);">
+            <div class="carousel-container">
+              <div class="carousel-content">
+                <h2 class="animate__animated animate__fadeInDown"><span>Doces da Lulu</span> </h2>
+                <p class="animate__animated animate__fadeInUp">Os Doces da Lulu trazem o verdadeiro sabor da infância em cada mordida.
+                  Feitos com carinho e ingredientes selecionados, são perfeitos para qualquer ocasião.
+                  De brigadeiro a canjica, tem sempre um doce que conquista o coração!</p>
+                <div>
+                  <a href="#menu" class="btn-menu animate__animated animate__fadeInUp scrollto">Menu</a>
+                  <!--<a href="#book-a-table" class="btn-book animate__animated animate__fadeInUp scrollto">Book a Table</a>-->
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Slide 2 -->
+          <div class="carousel-item" style="background-image: url(assets/img/slide/slider-2.jpg);">
+            <div class="carousel-container">
+              <div class="carousel-content">
+                <h2 class="animate__animated animate__fadeInDown">Doces da Lulu</h2>
+                <p class="animate__animated animate__fadeInUp">Com os Doces da Lulu, sua festa fica mais doce e especial.
+                  Receitas tradicionais e muito capricho em cada detalhe.
+                  Experimente e descubra por que todos se apaixonam à primeira prova!</p>
+                <div>
+                  <a href="#menu" class="btn-menu animate__animated animate__fadeInUp scrollto">Menu</a>
+                  <!--<a href="#book-a-table" class="btn-book animate__animated animate__fadeInUp scrollto">Book a Table</a>-->
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Slide 3 -->
+          <div class="carousel-item" style="background-image: url(assets/img/slide/slider-3.jpg);">
+            <div class="carousel-container">
+              <div class="carousel-content">
+                <h2 class="animate__animated animate__fadeInDown"> Doces da Lulu</h2>
+                <p class="animate__animated animate__fadeInUp">Doces da Lulu é sinônimo de qualidade, sabor e aquele toque caseiro que a gente ama.
+                  Seja para presentear, comemorar ou se deliciar, é a escolha certa.
+                  Peça agora e sinta a diferença no primeiro pedaço!</p>
+                <div>
+                  <a href="#menu" class="btn-menu animate__animated animate__fadeInUp scrollto">Menu</a>
+                  <!--<a href="#book-a-table" class="btn-book animate__animated animate__fadeInUp scrollto">Book a Table</a>-->
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <a class="carousel-control-prev" href="#heroCarousel" role="button" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon bi bi-chevron-left" aria-hidden="true"></span>
+        </a>
+
+        <a class="carousel-control-next" href="#heroCarousel" role="button" data-bs-slide="next">
+          <span class="carousel-control-next-icon bi bi-chevron-right" aria-hidden="true"></span>
+        </a>
+
+      </div>
+    </div>
+  </section><!-- End Hero -->
+
+  <main id="main">
+      
+   <!-- ======= logo Section ======= -->
+   <section id="logo" class="logo">
+        
+    <div class="text-center">
+    <img src="pedidos/logo02.jpeg" class="img-fluid" alt="Descrição da imagem">
+   </div> 
+   
+     </section>  
+      
+      
+    <!-- ======= About Section ======= -->
+    <section id="about" class="about">
+      <div class="container-fluid">
+
+        <div class="row">
+
+          <div class="col-lg-5 align-items-stretch video-box" style='background-image: url("assets/img/slide/slider-3.jpg");'>
+            <a href="https://www.youtube.com/watch?v=m0N3HcO3qRo" class="venobox play-btn mb-4" data-vbtype="video" data-autoplay="true"></a>
+          </div>
+
+          <div class="col-lg-7 d-flex flex-column justify-content-center align-items-stretch">
+
+            <div class="content">
+              <h3>Doces da Lulu a Doceria. <strong> </strong></h3>
+              <p>
+                A Doces da Lulu é uma empresa especializada na produção artesanal de sobremesas e quitutes tradicionais.
+                Com um toque caseiro e receitas que passam de geração em geração, oferecemos produtos de alta qualidade e muito sabor.
+              </p>
+              <p class="fst-italic">
+                Nosso compromisso é levar carinho em forma de doce para a casa de cada cliente.
+                Brigadeiros, cocadas, pudins, beijinhos e muito mais fazem parte do nosso cardápio especial.
+                Atendemos festas, eventos e pedidos individuais com muito capricho e dedicação.
+              </p>
+           
+              <p>
+                Utilizamos ingredientes frescos e selecionados para garantir o melhor resultado.
+                Acreditamos que um bom doce tem o poder de criar memórias e espalhar felicidade.
+                Nossa produção é feita com amor e cuidado, desde a escolha dos ingredientes até a entrega.
+                Doces da Lulu é mais do que sabor: é afeto em cada detalhe.
+                Faça seu pedido e experimente essa doçura que já conquistou tantos corações!
+              </p>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section><!-- End About Section -->
+
+   
+
+    <!-- ======= Menu Section ======= -->
+    <section id="menu" class="menu">
+      <div class="container">
+
+        <div class="section-title">
+          <h2><span>Menu</span></h2>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-12 d-flex justify-content-center">
+            <ul id="menu-flters">
+              <li data-filter="*" class="filter-active"> Todos </li>
+              <li data-filter=".filter-starters">Sobremesas</li>
+              <li data-filter=".filter-salads">Acompanhamentos</li>
+              <li data-filter=".filter-specialty">Bebidas</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="row menu-container">
+
+          <div class="col-lg-6 menu-item filter-starters">
+            <div class="menu-content">
+              <a href="#"> Brownie  </a><span>R$ 6,71 </span>
+            </div>
+            <div class="menu-ingredients">
+  
+            </div>
+          </div>
+
+          <div class="col-lg-6 menu-item filter-starters">
+            <div class="menu-content">
+              <a href="#">Pão de Mel </a><span>R$5,18</span>
+            </div>
+            <div class="menu-ingredients">
+      
+            </div>
+          </div>
+
+          <div class="col-lg-6 menu-item filter-starters">
+            <div class="menu-content">
+              <a href="#">Arroz doce</a><span>R$37.90</span>
+            </div>
+            <div class="menu-ingredients">
+        
+            </div>
+          </div>
+
+          <div class="col-lg-6 menu-item filter-starters">
+            <div class="menu-content">
+              <a href="#">Beijinho</a><span>R$6,90</span>
+            </div>
+            <div class="menu-ingredients">
+           
+            </div>
+          </div>
+
+          <div class="col-lg-6 menu-item filter-starters">
+            <div class="menu-content">
+              <a href="#">Bombocado</a><span>R$6,90</span>
+            </div>
+            <div class="menu-ingredients">
+      
+            </div>
+          </div>
+
+          <div class="col-lg-6 menu-item filter-starters">
+            <div class="menu-content">
+              <a href="#">Mouse de maracujá </a><span>R$7,24</span>
+            </div>
+            <div class="menu-ingredients">
+         
+            </div>
+          </div>
+
+          <div class="col-lg-6 menu-item filter-salads">
+            <div class="menu-content">
+              <a href="#">Pé de Moleque</a><span>R$4,90</span>
+            </div>
+            <div class="menu-ingredients">
+            
+            </div>
+          </div>
+
+          <div class="col-lg-6 menu-item filter-salads">
+            <div class="menu-content">
+              <a href="#">Maria mole</a><span>R$3,90</span>
+            </div>
+            <div class="menu-ingredients">
+            
+            </div>
+          </div>
+
+          <div class="col-lg-6 menu-item filter-specialty">
+            <div class="menu-content">
+              <a href="#">Bebidas</a><span>R$12,00</span>
+            </div>
+            <div class="menu-ingredients">
+            
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section><!-- End Menu Section -->
+
+  
+    <!-- ======= Gallery Section ======= -->
+    <section id="gallery" class="gallery">
+      <div class="container-fluid">
+
+        <div class="section-title">
+          <h2> Produtos Doces da Lulu <span> </span></h2>
+          <p>Doces da Lulu: sabor que abraça, carinho em cada receita.
+            Perfeitos para adoçar momentos especiais e deixar a vida mais feliz!</p>
+        </div>
+
+        <div class="row g-0">
+
+          <div class="col-lg-3 col-md-4">
+            <div class="gallery-item">
+              <a href="assets/img/gallery/01_a.jpeg" class="gallery-lightbox">
+                <img src="assets/img/gallery/01_a.jpeg" alt="" class="img-fluid">
+              </a>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-4">
+            <div class="gallery-item">
+              <a href="assets/img/gallery/02_b.jpeg" class="gallery-lightbox">
+                <img src="assets/img/gallery/02_b.jpeg" alt="" class="img-fluid">
+              </a>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-4">
+            <div class="gallery-item">
+              <a href="assets/img/gallery/03_c.jpeg" class="gallery-lightbox">
+                <img src="assets/img/gallery/03_c.jpeg" alt="" class="img-fluid">
+              </a>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-4">
+            <div class="gallery-item">
+              <a href="assets/img/gallery/04.jpg" class="gallery-lightbox">
+                <img src="assets/img/gallery/04.jpg" alt="" class="img-fluid">
+              </a>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-4">
+            <div class="gallery-item">
+              <a href="assets/img/gallery/05.jpg" class="gallery-lightbox">
+                <img src="assets/img/gallery/05.jpg" alt="" class="img-fluid">
+              </a>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-4">
+            <div class="gallery-item">
+              <a href="assets/img/gallery/06.jpg" class="gallery-lightbox">
+                <img src="assets/img/gallery/06.jpg" alt="" class="img-fluid">
+              </a>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-4">
+            <div class="gallery-item">
+              <a href="assets/img/gallery/07.jpg" class="gallery-lightbox">
+                <img src="assets/img/gallery/07.jpg" alt="" class="img-fluid">
+              </a>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-4">
+            <div class="gallery-item">
+              <a href="assets/img/gallery/08.jpg" class="gallery-lightbox">
+                <img src="assets/img/gallerY/08.jpg" alt="" class="img-fluid">
+              </a>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section><!-- End Gallery Section -->
+
+   
+    <!-- ======= Contact Section ======= -->
+    <section id="contact" class="contact">
+      <div class="container">
+
+        <div class="section-title">
+          <h2><span>Contato</span>   </h2>
+          <p>   </p>
+        </div>
+      </div>
+
+      <div class="map">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d117105.12419249713!2d-47.54910131269761!3d-23.47722718905472!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94c5f54bcad87989%3A0x4a9099fb9d10cb8e!2sSorocaba%2C%20SP!5e0!3m2!1spt-BR!2sbr!4v1745277830694!5m2!1spt-BR!2sbr" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+
+    
+      <div class="container mt-5">
+
+        <div class="info-wrap">
+          <div class="row">
+            <div class="col-lg-3 col-md-6 info">
+              <i class="bi bi-geo-alt"></i>
+              <h4>Endereço:</h4>
+              <p> Sorocaba<br>Rua nº 1000</p>
+            </div>
+
+            <div class="col-lg-3 col-md-6 info mt-4 mt-lg-0">
+              <i class="bi bi-clock"></i>
+              <h4>Oberto</h4>
+              <p> Ter- Dom<br>08:00 - 17:00</p>
+            </div>
+
+            <div class="col-lg-3 col-md-6 info mt-4 mt-lg-0">
+              <i class="bi bi-envelope"></i>
+              <h4>Email:</h4>
+              <p>info@docesdalulu.com.br<br>contato@docesdalulu.com.br</p>
+            </div>
+
+            <div class="col-lg-3 col-md-6 info mt-4 mt-lg-0">
+              <i class="bi bi-phone"></i>
+              <h4>Fone:</h4>
+              <p>(15) 9964-82230<br> </p>
+            </div>
+          </div>
+        </div>
+
+       
+
+      </div>
+    </section><!-- End Contact Section -->
+
+  </main><!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer">
+    <div class="container">
+      <h3>Doces da Lulu</h3>
+      <p>Doces da Lulu: o sabor do carinho em cada pedacinho.</p>
+      <div class="social-links">
+       <!-- <a href="#" class="twitter"><i class="bx bxl-twitter"></i></a>-->
+        <a href="https://www.facebook.com/docesdalulujundiai" target="_blank" class="facebook"><i class="bx bxl-facebook"></i></a>
+        <!--<a href="#" class="instagram"><i class="bx bxl-instagram"></i></a>
+        <a href="#" class="google-plus"><i class="bx bxl-skype"></i></a>
+        <a href="#" class="linkedin"><i class="bx bxl-linkedin"></i></a>-->
+      </div>
+      <div class="copyright">
+        &copy; Copyright <strong><span>Doces da Lulu</span></strong>. All Rights Reserved
+      </div>
+      <div class="credits">
+        <!-- All the links in the footer should remain intact. -->
+        <!-- You can delete the links only if you purchased the pro version. -->
+        <!-- Licensing information: https://bootstrapmade.com/license/ -->
+        <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/Doces da Lulu-free-restaurant-bootstrap-theme/ 
+        Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>-->
+      </div>
+    </div>
+  </footer><!-- End Footer -->
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="assets/vendor/php-email-form/validate.js"></script>
+
+  <!-- Template Main JS File -->
+  <script src="assets/js/main.js"></script>
+
+</body>
+
+</html>
+
+
+ <textarea name='observacoes' class='form-control mt-2' placeholder='Observações'></textarea>
+
+
+
+
+
+
+
